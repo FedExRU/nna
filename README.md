@@ -1,5 +1,5 @@
 # How to run
-###### Via docker
+###### Via Docker Compose
 ____
 #### Pre-install
 1. Mount composer image and install Laravel framework <br/> ```docker run --rm -v $(pwd):/app composer install```
