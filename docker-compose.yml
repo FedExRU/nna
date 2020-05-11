@@ -2,7 +2,7 @@ version: '3'
 services:
 
   #PHP Service
-  app:
+  pu_app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,7 +20,7 @@ services:
       - app-network
 
   #Nginx Service
-  webserver:
+  pu_webserver:
     image: nginx:alpine
     container_name: pu-webserver
     restart: unless-stopped
@@ -35,19 +35,23 @@ services:
       - app-network
 
   #PostgreSQL Service
-  db:
-    image: postgres:9.6-alpine
-    container_name: pu-postgres
+  pu_mysql:
+    image: mysql:5.7.22
+    container_name: pu-mysql
+    restart: unless-stopped
+    tty: true
     environment:
-      - POSTGRES_DB=${DB_DATABASE}
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
     networks:
-       - app-network
+      - app-network
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      - dbdata:/var/lib/mysql/
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
     ports:
-      - "5432:5432"
+      - "3306:3306"
 
 #Docker Networks
 networks:
