@@ -53,6 +53,16 @@ services:
     ports:
       - "3306:3306"
 
+  npm:
+    image: node:13.7
+    container_name: npm
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    entrypoint: ['npm']
+    networks:
+      - app-network
+
 #Docker Networks
 networks:
   app-network:
